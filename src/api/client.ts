@@ -6,18 +6,8 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // 关键：允许携带 cookies
 })
 
-// 请求拦截器：添加 token
-apiClient.interceptors.request.use(
-  config => {
-    const token = localStorage.getItem('access_token')
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
-    return config
-  },
-  error => Promise.reject(error)
-)
 
 export default apiClient

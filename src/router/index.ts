@@ -29,8 +29,7 @@ const router = createRouter({
     {
       path: '/student',
       component: () => import('@/layouts/StudentLayout.vue'),
-      //meta: { requiresAuth: true, role: 'student' },
-      meta: { requiresGuest: true },
+      meta: { requiresAuth: true, role: 'student' },
       children: [
         { path: 'dashboard', name: 'student-dashboard', component: () => import('@/views/student/Dashboard.vue') },
         { path: 'activities', name: 'student-activities', component: () => import('@/views/student/ActivityList.vue') },
@@ -46,15 +45,10 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const requiresGuest = to.matched.some(record => record.meta.requiresGuest)
-  const requiredRole = to.meta.role
 
   if (requiresAuth && !authStore.isAuthenticated) {
     next('/login')
   } else if (requiresGuest && authStore.isAuthenticated) {
-    // 已登录用户不能访问登录页
-    next(authStore.isTeacher ? '/teacher/dashboard' : '/student/dashboard')
-  } else if (requiresAuth && requiredRole && authStore.role !== requiredRole) {
-    // 角色不匹配，跳转到对应角色的首页
     next(authStore.isTeacher ? '/teacher/dashboard' : '/student/dashboard')
   } else {
     next()

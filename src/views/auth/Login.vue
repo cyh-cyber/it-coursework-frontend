@@ -25,9 +25,11 @@
 <script setup>
 import { ref, reactive } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
+const router = useRouter()
 const formRef = ref()
 const loading = ref(false)
 

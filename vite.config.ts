@@ -12,9 +12,9 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:8080',  // Django 开发服务器地址
+        target: 'http://localhost:8000',  // Django 开发服务器地址
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        //rewrite: (path) => path.replace(/^\/api/, '')
       }
     }
   }
