@@ -45,6 +45,18 @@ router.beforeEach((to, from, next) => {
   const authStore = useAuthStore()
   const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
   const requiresGuest = to.matched.some(record => record.meta.requiresGuest)
+  const loginTimestamp = localStorage.getItem('login_timestamp')
+  const MAX_AGE = 24 * 60 * 60 * 1000
+  
+  if (loginTimestamp && (Date.now() - parseInt(loginTimestamp) > MAX_AGE)) {
+    localStorage.removeItem('user')
+    localStorage.removeItem('login_timestamp')
+    authStore.user = null // 清空 store 中的用户信息
+    // 如果目标路由需要登录，则强制跳转登录页
+    if (to.meta.requiresAuth) {
+      return '/login'
+    }
+  }
 
   if (requiresAuth && !authStore.isAuthenticated) {
     next('/login')

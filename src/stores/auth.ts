@@ -17,6 +17,8 @@ export const useAuthStore = defineStore('auth', {
         const response = await apiClient.post('/login/', credentials)
         // 登录成功后，后端会设置 session cookie，并返回用户信息
         const user = response.data.user
+        //记录登录时间以便删除localstorage
+        localStorage.setItem('login_timestamp', Date.now().toString())
         this.user = user
         localStorage.setItem('user', JSON.stringify(user))
 
