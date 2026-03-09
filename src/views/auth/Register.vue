@@ -1,31 +1,82 @@
 <template>
   <el-row justify="center" align="middle" class="register-container">
-    <el-col :span="8">
-      <el-card class="register-card">
-        <h2>Create Account</h2>
+    <el-col :span="8" :xs="22" :sm="16" :md="12" :lg="8">
+      <el-card class="register-card" role="region" aria-label="创建新账号区域">
+        <h2 tabindex="0">Create Account</h2>
+        
         <el-form :model="form" :rules="rules" ref="formRef" label-width="100px">
+          
           <el-form-item label="Username" prop="username">
-            <el-input v-model="form.username" placeholder="Enter username" />
+            <el-input 
+              v-model="form.username" 
+              placeholder="Enter username" 
+              id="regUsername"
+              aria-required="true"
+              aria-label="请输入您的用户名"
+            />
           </el-form-item>
+
           <el-form-item label="Email" prop="email">
-            <el-input v-model="form.email" placeholder="Enter email (optional)" />
+            <el-input 
+              v-model="form.email" 
+              placeholder="Enter email (optional)" 
+              id="regEmail"
+              aria-label="请输入您的电子邮箱，此项为选填"
+            />
           </el-form-item>
+
           <el-form-item label="Password" prop="password">
-            <el-input v-model="form.password" type="password" placeholder="Enter password" />
+            <el-input 
+              v-model="form.password" 
+              type="password" 
+              placeholder="Enter password" 
+              id="regPassword"
+              aria-required="true"
+              aria-label="请输入密码"
+            />
           </el-form-item>
+
           <el-form-item label="Confirm" prop="password2">
-            <el-input v-model="form.password2" type="password" placeholder="Confirm password" />
+            <el-input 
+              v-model="form.password2" 
+              type="password" 
+              placeholder="Confirm password" 
+              id="regConfirmPassword"
+              aria-required="true"
+              aria-label="请再次输入密码以确认"
+            />
           </el-form-item>
+
           <el-form-item label="Role" prop="role">
-            <el-radio-group v-model="form.role">
-              <el-radio value="student">Student</el-radio>
-              <el-radio value="teacher">Teacher</el-radio>
+            <el-radio-group v-model="form.role" aria-label="请选择您的注册角色">
+              <el-radio value="student" aria-label="注册为学生">Student</el-radio>
+              <el-radio value="teacher" aria-label="注册为教师">Teacher</el-radio>
             </el-radio-group>
           </el-form-item>
+
           <el-form-item>
-            <el-button type="primary" @click="handleRegister" :loading="loading">Register</el-button>
-            <el-button @click="goToLogin">Back to Login</el-button>
+            <el-button 
+              type="primary" 
+              @click="handleRegister" 
+              :loading="loading"
+              aria-label="提交注册信息"
+            >
+              Register
+            </el-button>
           </el-form-item>
+
+          <el-form-item>
+            <span>Already have an account? 
+              <el-link 
+                type="primary" 
+                @click="router.push('/login')"
+                aria-label="返回登录页面"
+              >
+                Login
+              </el-link>
+            </span>
+          </el-form-item>
+
         </el-form>
       </el-card>
     </el-col>
