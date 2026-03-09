@@ -1,6 +1,9 @@
 <template>
   <div class="student-dashboard">
-    <h2><h2>Welcome, {{ username }}!</h2></h2>
+    <div class="welcome-banner">
+      <h2>Welcome back, {{ username }}! 👋</h2>
+      <p>Here is your upcoming schedule.</p>
+    </div>
     <el-row :gutter="20">
       <el-col :span="24">
         <el-card class="schedule-card">
@@ -85,6 +88,26 @@ onMounted(() => {
 .student-dashboard {
   padding: 20px;
 }
+
+/* 新增的欢迎横幅样式 */
+.welcome-banner {
+  background: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.welcome-banner h2 { 
+  margin: 0 0 8px 0; 
+  font-weight: 600;
+}
+.welcome-banner p { 
+  margin: 0; 
+  opacity: 0.9; 
+  font-size: 15px;
+}
+
 .schedule-card {
   margin-top: 20px;
 }

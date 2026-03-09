@@ -1,20 +1,37 @@
 <template>
   <div v-if="activity" class="activity-detail">
-    <el-card>
-      <h2>{{ activity.title }}</h2>
-      <p><el-icon><Calendar /></el-icon> Time: {{ formatDate(activity.time) }}</p>
-      <p><el-icon><Location /></el-icon> Place: {{ activity.place }}</p>
-      <p><el-icon><Collection /></el-icon> Category: {{ getCategoryLabel(activity.category) }}</p>
-      <p>Description: {{ activity.description }}</p>
-      <p>Posted by: {{ activity.teacher_name }}</p>
+    <el-card shadow="hover">
+      <el-descriptions
+        :title="activity.title"
+        :column="1"
+        border
+        class="mb-4"
+      >
+        <el-descriptions-item label="Time" label-align="right" align="left">
+          <el-icon><Calendar /></el-icon> {{ formatDate(activity.time) }}
+        </el-descriptions-item>
+        <el-descriptions-item label="Place" label-align="right" align="left">
+          <el-icon><Location /></el-icon> {{ activity.place }}
+        </el-descriptions-item>
+        <el-descriptions-item label="Category" label-align="right" align="left">
+          <el-tag size="small">{{ getCategoryLabel(activity.category) }}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item label="Teacher" label-align="right" align="left">
+          {{ activity.teacher_name }}
+        </el-descriptions-item>
+        <el-descriptions-item label="Description" label-align="right" align="left">
+          {{ activity.description }}
+        </el-descriptions-item>
+      </el-descriptions>
+
       <div class="action-buttons">
-        <el-button v-if="activity.is_registered" type="danger" @click="handleCancel">Cancel Registration</el-button>
-        <el-button v-else type="success" @click="handleRegister">Register Now</el-button>
-        <el-button @click="goBack">Back</el-button>
+        <el-button v-if="activity.is_registered" type="danger" @click="handleCancel" size="large">Cancel Registration</el-button>
+        <el-button v-else type="success" @click="handleRegister" size="large">Register Now</el-button>
+        <el-button @click="goBack" size="large" plain>Back</el-button>
       </div>
     </el-card>
 
-    <el-card style="margin-top: 20px;">
+    <el-card style="margin-top: 20px;" shadow="hover">
       <h3>Comments ({{ comments.length }})</h3>
       <el-divider />
       <div v-for="comment in comments" :key="comment.id" class="comment-item">
@@ -22,9 +39,11 @@
         <span>{{ comment.content }}</span>
         <div class="comment-time">{{ formatDate(comment.created_at) }}</div>
       </div>
-      <el-divider />
-      <el-input v-model="newComment" type="textarea" :rows="3" placeholder="Write your comment..." />
-      <el-button type="primary" style="margin-top: 10px;" @click="submitComment">Post Comment</el-button>
+      <el-divider v-if="comments.length > 0" />
+      <el-input v-model="newComment" type="textarea" :rows="3" placeholder="Write your comment here..." />
+      <div style="text-align: right; margin-top: 15px;">
+        <el-button type="primary" @click="submitComment">Post Comment</el-button>
+      </div>
     </el-card>
   </div>
 </template>
@@ -127,18 +146,25 @@ onMounted(() => {
   margin: 20px auto;
   padding: 20px;
 }
+.mb-4 {
+  margin-bottom: 24px;
+}
 .action-buttons {
   margin-top: 20px;
   display: flex;
-  gap: 10px;
+  gap: 12px;
+  justify-content: flex-end; /* 让按钮整体靠右侧，更符合表单习惯 */
 }
 .comment-item {
-  border-bottom: 1px solid #eee;
-  padding: 10px 0;
+  border-bottom: 1px solid #ebeef5; /* 使用Element Plus的标准边框色 */
+  padding: 12px 0;
+}
+.comment-item:last-child {
+  border-bottom: none; /* 最后一个评论不显示底边框 */
 }
 .comment-time {
   font-size: 12px;
-  color: #999;
-  margin-top: 4px;
+  color: #909399; /* 使用Element Plus的标准次要文字色 */
+  margin-top: 6px;
 }
 </style>
