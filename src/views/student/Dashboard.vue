@@ -3,6 +3,9 @@
     <div class="welcome-banner">
       <h2>Welcome back, {{ username }}! 👋</h2>
       <p>Here is your upcoming schedule.</p>
+      <div class="time-display">
+        <el-icon><Timer /></el-icon> {{ currentTime }}
+      </div>
     </div>
     <el-row :gutter="20">
       <el-col :span="24">
@@ -36,7 +39,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed} from 'vue'
+import { ref, onMounted, computed, onUnmounted } from 'vue'
+import { Timer } from '@element-plus/icons-vue' // 引入时钟图标
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { Location, Collection } from '@element-plus/icons-vue'
@@ -48,6 +52,9 @@ const router = useRouter()
 const authStore = useAuthStore()
 const registeredActivities = ref([])
 const username = computed(() => authStore.user?.username || 'User')
+
+const currentTime = ref(dayjs().format('dddd, MMMM D, YYYY | HH:mm:ss'))
+let timer = null//定义时钟变量和定时器
 
 const fetchSchedule = async () => {
   try {
@@ -81,6 +88,14 @@ const goToBrowse = () => {
 
 onMounted(() => {
   fetchSchedule()
+  // 每秒钟更新一次时间
+  timer = setInterval(() => {
+    currentTime.value = dayjs().format('dddd, MMMM D, YYYY | HH:mm:ss')
+  }, 1000)
+})
+//防止内存泄漏
+onUnmounted(() => {
+  if (timer) clearInterval(timer)
 })
 </script>
 
@@ -107,7 +122,17 @@ onMounted(() => {
   opacity: 0.9; 
   font-size: 15px;
 }
-
+.time-display {
+  margin-top: 12px;
+  font-family: monospace; /* 用等宽字体显示时间更有科技感 */
+  font-size: 16px;
+  background: rgba(255, 255, 255, 0.2); /* 半透明背景 */
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 .schedule-card {
   margin-top: 20px;
 }
