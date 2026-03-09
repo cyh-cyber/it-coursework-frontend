@@ -1,26 +1,43 @@
 <template>
   <div class="teacher-dashboard">
-    <h2>Welcome, {{ username }}!</h2>
+    <div class="welcome-banner">
+      <h2>Welcome to Teacher Portal, {{ username }}! 👨‍🏫</h2>
+      <p>Manage your activities and track student participation.</p>
+    </div>
+
     <el-row :gutter="20">
       <el-col :span="24">
-        <el-card>
-          <div style="margin-bottom: 20px;">
-            <el-button type="primary" @click="goToCreate">Create New Activity</el-button>
+        <el-card class="shadow-sm">
+          <div class="toolbar">
+            <el-button type="primary" size="large" @click="goToCreate">
+              ✨ Create New Activity
+            </el-button>
           </div>
-          <el-table :data="activities" style="width: 100%">
-            <el-table-column prop="title" label="Title" />
-            <el-table-column prop="time" label="Time" :formatter="(row) => formatDate(row.time)" />
-            <el-table-column prop="place" label="Place" />
-            <el-table-column prop="category" label="Category" :formatter="(row) => getCategoryLabel(row.category)" />
-            <el-table-column prop="is_active" label="Status">
+          
+          <el-table :data="activities" style="width: 100%" stripe>
+            <template #empty>
+              <el-empty description="You haven't published any activities yet. Click the button above to start!" />
+            </template>
+
+            <el-table-column prop="title" label="Title" min-width="150" />
+            <el-table-column prop="time" label="Time" width="160" :formatter="(row) => formatDate(row.time)" />
+            <el-table-column prop="place" label="Place" min-width="120" />
+            <el-table-column prop="category" label="Category" width="120">
+              <template #default="{ row }">
+                <el-tag size="small" :type="row.category === 'academic' ? 'primary' : (row.category === 'sports' ? 'success' : 'warning')">
+                  {{ getCategoryLabel(row.category) }}
+                </el-tag>
+              </template>
+            </el-table-column>
+            <el-table-column prop="is_active" label="Status" width="100">
               <template #default="{ row }">
                 <el-tag :type="row.is_active ? 'success' : 'info'">{{ row.is_active ? 'Active' : 'Cancelled' }}</el-tag>
               </template>
             </el-table-column>
-            <el-table-column label="Actions" width="200">
+            <el-table-column label="Actions" width="220" fixed="right">
               <template #default="{ row }">
-                <el-button size="small" @click="viewParticipants(row.id)">View Students</el-button>
-                <el-button size="small" type="danger" @click="cancelActivity(row.id)" v-if="row.is_active">Cancel</el-button>
+                <el-button size="small" plain type="primary" @click="viewParticipants(row.id)">Students</el-button>
+                <el-button size="small" type="danger" plain @click="cancelActivity(row.id)" v-if="row.is_active">Cancel</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -89,3 +106,19 @@ onMounted(() => {
   fetchActivities()
 })
 </script>
+
+<style scoped>
+.teacher-dashboard { padding: 20px; }
+.welcome-banner {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 24px;
+  border-radius: 8px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.welcome-banner h2 { margin: 0 0 8px 0; font-weight: 600; }
+.welcome-banner p { margin: 0; opacity: 0.9; font-size: 15px; }
+.toolbar { margin-bottom: 20px; display: flex; justify-content: flex-end; }
+.shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.05); border-radius: 8px;}
+</style>

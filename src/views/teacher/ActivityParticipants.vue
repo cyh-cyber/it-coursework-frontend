@@ -1,15 +1,30 @@
 <template>
-  <div class="participants">
-    <h2>Participants for "{{ activityTitle }}"</h2>
-    <el-card>
-      <el-table :data="participants" style="width: 100%">
-        <el-table-column prop="student__username" label="Username" />
-        <el-table-column prop="student__email" label="Email" />
-        <el-table-column prop="registered_at" label="Registered At" :formatter="(row) => formatDate(row.registered_at)" />
+  <div class="participants-container">
+    <div class="page-header">
+      <el-button plain @click="router.back()" size="small" class="back-btn">← Back to Dashboard</el-button>
+      <h2>👥 Participants List</h2>
+      <p class="text-muted">Activity: <strong class="highlight-text">{{ activityTitle }}</strong></p>
+    </div>
+    
+    <el-card class="shadow-sm">
+      <el-table :data="participants" style="width: 100%" stripe>
+        <template #empty>
+          <el-empty description="No students have registered for this activity yet." />
+        </template>
+        
+        <el-table-column type="index" width="60" />
+        <el-table-column prop="student__username" label="Username" min-width="120">
+          <template #default="{ row }">
+            <strong>{{ row.student__username }}</strong>
+          </template>
+        </el-table-column>
+        <el-table-column prop="student__email" label="Email" min-width="180" />
+        <el-table-column prop="registered_at" label="Registration Time" width="180">
+          <template #default="{ row }">
+            <el-tag size="small" type="info">{{ formatDate(row.registered_at) }}</el-tag>
+          </template>
+        </el-table-column>
       </el-table>
-      <div style="margin-top: 20px;">
-        <el-button @click="router.back()">Back</el-button>
-      </div>
     </el-card>
   </div>
 </template>
@@ -47,9 +62,15 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.participants {
-  max-width: 800px;
+.participants-container {
+  max-width: 900px;
   margin: 20px auto;
   padding: 20px;
 }
+.page-header { margin-bottom: 24px; position: relative; }
+.back-btn { margin-bottom: 15px; }
+.page-header h2 { margin: 0 0 8px 0; color: #303133; }
+.text-muted { color: #606266; font-size: 15px; margin: 0; }
+.highlight-text { color: #409EFF; font-size: 16px; }
+.shadow-sm { box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.05); border-radius: 8px; }
 </style>
