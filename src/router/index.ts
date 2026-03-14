@@ -23,6 +23,8 @@ const router = createRouter({
       children: [
         { path: 'dashboard', name: 'teacher-dashboard', component: () => import('@/views/teacher/Dashboard.vue') },
         { path: 'activities/create', name: 'teacher-create-activity', component: () => import('@/views/teacher/CreateActivity.vue') },
+        { path: 'activities', name: 'teacher-activities', component: () => import('@/views/teacher/ActivityList.vue') },
+        { path: 'activities/:id', name: 'teacher-activity-detail', component: () => import('@/views/teacher/ActivityDetail.vue') },
         { path: 'activities/:id/participants', name: 'teacher-participants', component: () => import('@/views/teacher/ActivityParticipants.vue') },
       ],
     },

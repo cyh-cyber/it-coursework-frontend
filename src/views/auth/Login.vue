@@ -1,55 +1,21 @@
 <template>
   <el-row justify="center" align="middle" class="login-container">
-    <el-col :span="8" :xs="22" :sm="16" :md="12" :lg="8"> <el-card class="login-card" role="region" aria-label="用户登录区域">
-        <h2 tabindex="0">Learning Activity Management System</h2>
-        
+    <el-col :span="8">
+      <el-card class="login-card">
+        <h2>Learning Activity Management System</h2>
         <el-form :model="form" :rules="rules" ref="formRef" label-width="80px">
-          
           <el-form-item label="Username" prop="username">
-            <el-input 
-              v-model="form.username" 
-              placeholder="Enter username" 
-              id="usernameInput"
-              aria-required="true"
-              aria-label="请输入您的用户名"
-            />
+            <el-input v-model="form.username" placeholder="Enter username" />
           </el-form-item>
-
           <el-form-item label="Password" prop="password">
-            <el-input 
-              v-model="form.password" 
-              type="password" 
-              placeholder="Enter password" 
-              id="passwordInput"
-              @keyup.enter="handleLogin" 
-              aria-required="true"
-              aria-label="请输入您的密码"
-            />
+            <el-input v-model="form.password" type="password" placeholder="Enter password" @keyup.enter="handleLogin" />
           </el-form-item>
-
           <el-form-item>
-            <el-button 
-              type="primary" 
-              @click="handleLogin" 
-              :loading="loading"
-              aria-label="提交登录表单"
-            >
-              Login
-            </el-button>
+            <el-button type="primary" @click="handleLogin" :loading="loading">Login</el-button>
           </el-form-item>
-
           <el-form-item>
-            <span>Don't have an account? 
-              <el-link 
-                type="primary" 
-                @click="goToRegister"
-                aria-label="跳转到新用户注册页面"
-              >
-                Register
-              </el-link>
-            </span>
+            <span>Don't have an account? <el-link type="primary" @click="goToRegister">Register</el-link></span>
           </el-form-item>
-
         </el-form>
       </el-card>
     </el-col>

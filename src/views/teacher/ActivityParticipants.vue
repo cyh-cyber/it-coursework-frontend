@@ -1,7 +1,7 @@
 <template>
   <div class="participants-container">
     <div class="page-header">
-      <el-button plain @click="router.back()" size="small" class="back-btn">← Back to Dashboard</el-button>
+      <el-button plain @click="router.back()" size="defalut" type="primary" class="back-btn">← Back to Dashboard</el-button>
       <h2>👥 Participants List</h2>
       <p class="text-muted">Activity: <strong class="highlight-text">{{ activityTitle }}</strong></p>
     </div>
@@ -13,12 +13,12 @@
         </template>
         
         <el-table-column type="index" width="60" />
-        <el-table-column prop="student__username" label="Username" min-width="120">
+        <el-table-column prop="username" label="Username" min-width="120">
           <template #default="{ row }">
-            <strong>{{ row.student__username }}</strong>
+            <strong>{{ row.username }}</strong>
           </template>
         </el-table-column>
-        <el-table-column prop="student__email" label="Email" min-width="180" />
+        <el-table-column prop="email" label="Email" min-width="180" />
         <el-table-column prop="registered_at" label="Registration Time" width="180">
           <template #default="{ row }">
             <el-tag size="small" type="info">{{ formatDate(row.registered_at) }}</el-tag>
