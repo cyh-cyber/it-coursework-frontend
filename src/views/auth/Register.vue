@@ -82,3 +82,69 @@
     </el-col>
   </el-row>
 </template>
+
+<script setup>
+import { ref, reactive } from 'vue'
+import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
+import { register } from '@/api/auth'
+
+const router = useRouter()
+const formRef = ref()
+const loading = ref(false)
+
+const form = reactive({
+  username: '',
+  email: '',
+  password: '',
+  password2: '',
+  role: 'student', // student by default
+})
+
+const validatePass2 = (rule, value, callback) => {
+  if (value !== form.password) {
+    callback(new Error('Passwords do not match'))
+  } else {
+    callback()
+  }
+}
+
+const rules = {
+  username: [{ required: true, message: 'Please enter username', trigger: 'blur' }],
+  password: [{ required: true, message: 'Please enter password', trigger: 'blur' }],
+  password2: [
+    { required: true, message: 'Please confirm password', trigger: 'blur' },
+    { validator: validatePass2, trigger: 'blur' }
+  ],
+  role: [{ required: true, message: 'Please select role', trigger: 'change' }],
+  email: [{ type: 'email', message: 'Please enter valid email', trigger: 'blur' }]
+}
+
+const handleRegister = async () => {
+  await formRef.value.validate()
+  loading.value = true
+  try {
+    await register(form)
+    ElMessage.success('Registration successful, please login')
+    router.push('/login')
+  } catch (error) {
+    ElMessage.error(error.response?.data?.message || 'Registration failed')
+  } finally {
+    loading.value = false
+  }
+}
+
+const goToLogin = () => {
+  router.push('/login')
+}
+</script>
+
+<style scoped>
+.register-container {
+  height: 100vh;
+  background-color: #f5f7fa;
+}
+.register-card {
+  padding: 20px;
+}
+</style>
